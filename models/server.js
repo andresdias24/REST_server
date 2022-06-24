@@ -1,5 +1,6 @@
 const express = require('express')
 
+const {dbConection} = require('../DB/config');
 
 class Server {
 
@@ -8,15 +9,19 @@ class Server {
         this.port = process.env.PORT || 3000;
         this.usuariospPath = '/api/usuarios';
         
-        
+        // conect db
+        this.conectDB();
+
         // midelwares
         this.middlewares();
         // rutas de mi aplicacion
         this.routes();
-
-
+        
     }
-
+    async conectDB() {
+        await dbConection();
+    }
+    
     middlewares() {
         // escuchar peticiones
         this.app.use(express.json());

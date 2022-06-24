@@ -1,4 +1,5 @@
 const {response} = require('express');
+const Usuario = require('../models/usuario');
 
 const userGet = (req, res =  response ) => {
     res.status(200).json({
@@ -13,14 +14,22 @@ const userPut = (req, res =  response ) => {
         msg: 'GET- controller'
     })
 }
-const userPost = (req, res =  response ) => {
-console.log("😆👽🕳👨‍💻 🧬 ~ file: user_controller.js ~ line 17 ~ req", req.body)
-    const {nombre, edad}  = req.body 
-    res.json({
-        msg: 'POST- controller',
-        nombre,
-        edad
-    })  
+const userPost =  async (req, res =  response ) => {
+    const body = req.body;
+    console.log("😆👽🕳👨‍💻 🧬 ~ file: user_controller.js ~ line 19 ~ body", body)
+    const usuario = new Usuario(body);
+    await usuario.save((err, usuarioDB) => {
+        if(err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+        res.status(201).json({
+            ok: true,
+            usuario: usuarioDB
+        });
+    })
 }
 const userDelete = (req, res =  response ) => {
     res.status(200).json({
