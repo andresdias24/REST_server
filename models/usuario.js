@@ -36,8 +36,11 @@ const UsuarioSchema = Schema({
 
 // sacamos password de la respuesta del lado del cliente y no del lado del servidor
 UsuarioSchema.methods.toJSON = function() {
-    const { __v, password, ...usuario  } = this.toObject();
+    const { __v, password,_id,  ...usuario  } = this.toObject();
+    usuario.uid = _id;
     return usuario;
 }
+
+
 
 module.exports = model( 'Usuario', UsuarioSchema );
