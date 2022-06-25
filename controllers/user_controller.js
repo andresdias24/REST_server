@@ -6,7 +6,7 @@ const usuario = require('../models/usuario');
 const userGet = async (req, res =  response ) => {
     const {limite = 3, desde = 0} = req.query;
     const query = { estado: true }
-
+    // validar el async await  se ejecuntan  en orden pero si una respuesta no depende de la otra lo mejor es utilizar promise.all() el time sera mas rapido    
     const [total , usuarios] = await Promise.all([
         usuario.find(query)
             .skip(Number(desde))
@@ -57,17 +57,21 @@ const userPut = async (req, res =  response ) => {
 //         });
 //     })
 // }
-const userDelete = (req, res =  response ) => {
+const userDelete = async (req, res =  response ) => {
+    const { id } = req.params;
+    
+    const usuarioDelete = await usuario.findByIdAndUpdate(id, { estado: false })
+
+
     res.status(200).json({
         ok: true,
-        msg: 'GET- controller'
+        msg: 'DELETE- controller',
+        usuarioDelete
     })
 }
 
+
 const userPost = async(req, res = response) => {
-
-
-
     
     const { nombre, correo, password, rol } = req.body;
     const usuario = new Usuario({ nombre, correo, password, rol });
