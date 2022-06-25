@@ -1,13 +1,19 @@
-const {response} = require('express');
+const {response, query} = require('express');
 const Usuario = require('../models/usuario');
 const bcryptjs = require('bcryptjs');
 const usuario = require('../models/usuario');
 
-const userGet = (req, res =  response ) => {
-    res.status(200).json({
-        ok: true,
-        msg: 'GET- controller'
-    })
+const userGet = async (req, res =  response ) => {
+    const {limite = 3, desde = 0} = req.query;
+    const query = { estado: true }
+
+    const [total , usuarios] = await Promise.all([
+        usuario.find(query)
+            .skip(Number(desde))
+            .limit(Number(limite)), 
+        usuario.countDocuments(query)]);
+    
+    res.status(200).json({ ok: true,total, usuarios });
 }
 
 const userPut = async (req, res =  response ) => {
