@@ -3,15 +3,15 @@ const mongoose = require('mongoose');
 const dbConection = async () => {
     try {
         mongoose.connect(process.env.DB_CONNECTION, {
-            useNewUrlParser: true, 
-            useUnifiedTopology: true 
-        }, err => {
-            if(err) throw err;
-            console.log('Connected to MongoDB!!!')
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
         })
+        console.log('Base de datos online');
+
     }
     catch (error) {
         console.log(error);
+        throw new Error('Error a la hora de iniciar la base de datos');
     }
 }
 
