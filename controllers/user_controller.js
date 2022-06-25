@@ -44,13 +44,14 @@ const userPut = async (req, res =  response ) => {
 
 const userDelete = async (req, res =  response ) => {
     const { id } = req.params;
-    
+    const uid = req.uid
     const usuarioDelete = await usuario.findByIdAndUpdate(id, { estado: false })
 
     res.status(200).json({
         ok: true,
         msg: 'DELETE- controller',
-        usuarioDelete
+        usuarioDelete,
+        uid
     })
 }
 
