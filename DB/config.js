@@ -11,7 +11,7 @@ const dbConection = async () => {
     }
     catch (error) {
         console.log(error);
-        throw new Error('Error a la hora de iniciar la base de datos');
+        throw new Error(error, 'Error a la hora de iniciar la base de datos');
     }
 }
 
