@@ -34,7 +34,7 @@ const UsuarioSchema = Schema({
 });
 
 
-
+// sacamos password de la respuesta del lado del cliente y no del lado del servidor
 UsuarioSchema.methods.toJSON = function() {
     const { __v, password, ...usuario  } = this.toObject();
     return usuario;
