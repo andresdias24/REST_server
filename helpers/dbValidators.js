@@ -18,7 +18,15 @@ const esRolValido = async (rol = '') => {
     }
 }
 
+// verificar si existe un usuario por is
+const existeUsuario = async (id = '') => {
+    const existeUsuarioHelper = await Usuario.findById(id);
+    if (!existeUsuarioHelper) {
+        throw new Error(`El usuario ${id} no existe`);
+    }
+};
 module.exports = {
     esRolValido,
-    existeCorreo
+    existeCorreo,
+    existeUsuario
 }

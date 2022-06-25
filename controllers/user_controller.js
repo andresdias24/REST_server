@@ -1,6 +1,7 @@
 const {response} = require('express');
 const Usuario = require('../models/usuario');
 const bcryptjs = require('bcryptjs');
+const usuario = require('../models/usuario');
 
 const userGet = (req, res =  response ) => {
     res.status(200).json({
@@ -9,10 +10,24 @@ const userGet = (req, res =  response ) => {
     })
 }
 
-const userPut = (req, res =  response ) => {
+const userPut = async (req, res =  response ) => {
+
+    const { id } = req.params;
+    const { _id, google, password,  correo,  ...rest } = req.body;
+
+    // TODO - Validar contra la base de datos
+
+    if (password) {
+        const salt = bcryptjs.genSaltSync();
+        rest.password = bcryptjs.hashSync(password, salt);    
+    }
+
+    const usuarios = await usuario.findByIdAndUpdate(id, rest, { new: true });
+
     res.status(200).json({
         ok: true,
-        msg: 'GET- controller'
+        msg:`PUT- controller - ${id} - ${usuarios}`,
+        usuarios
     })
 }
 // const userPost =  async (req, res =  response ) => {
