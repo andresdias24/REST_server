@@ -1,6 +1,8 @@
 const Roles = require('../models/role');
 const Usuario = require('../models/usuario');
 
+
+// validar si es un rol valido
 const esRolValido = async (rol = '') => {
     const existeRol = await Roles.findOne({rol});
     if (!existeRol) {
@@ -18,7 +20,7 @@ const esRolValido = async (rol = '') => {
     }
 }
 
-// verificar si existe un usuario por is
+// verificar si existe un usuario por id
 const existeUsuario = async (id = '') => {
     const existeUsuarioHelper = await Usuario.findById(id);
     if (!existeUsuarioHelper) {

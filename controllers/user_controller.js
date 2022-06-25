@@ -3,9 +3,12 @@ const Usuario = require('../models/usuario');
 const bcryptjs = require('bcryptjs');
 const usuario = require('../models/usuario');
 
+
 const userGet = async (req, res =  response ) => {
+    
     const {limite = 3, desde = 0} = req.query;
     const query = { estado: true }
+    
     // validar el async await  se ejecuntan  en orden pero si una respuesta no depende de la otra lo mejor es utilizar promise.all() el time sera mas rapido    
     const [total , usuarios] = await Promise.all([
         usuario.find(query)
@@ -15,6 +18,7 @@ const userGet = async (req, res =  response ) => {
     
     res.status(200).json({ ok: true,total, usuarios });
 }
+
 
 const userPut = async (req, res =  response ) => {
 
@@ -36,32 +40,12 @@ const userPut = async (req, res =  response ) => {
         usuarios
     })
 }
-// const userPost =  async (req, res =  response ) => {
-//     const {nombre, correo, password, rol} = req.body;
-//     const usuario = new Usuario({nombre, correo, password, rol});
-//     // verificar si el correo existe
-//     // encriptar la contraseña
-//     const salt = bcriptjs.genSaltSync();
-//     usuario.password = bcriptjs.hashSync(password, salt);   
 
-//     await usuario.save((err, usuarioDB) => {
-//         if(err) {
-//             return res.status(400).json({
-//                 ok: false,
-//                 err
-//             });
-//         }
-//         res.status(201).json({
-//             ok: true,
-//             usuario: usuarioDB
-//         });
-//     })
-// }
+
 const userDelete = async (req, res =  response ) => {
     const { id } = req.params;
     
     const usuarioDelete = await usuario.findByIdAndUpdate(id, { estado: false })
-
 
     res.status(200).json({
         ok: true,
@@ -71,12 +55,11 @@ const userDelete = async (req, res =  response ) => {
 }
 
 
+
 const userPost = async(req, res = response) => {
     
     const { nombre, correo, password, rol } = req.body;
     const usuario = new Usuario({ nombre, correo, password, rol });
-
-
 
     // Encriptar la contraseña
     const salt = bcryptjs.genSaltSync();
@@ -89,6 +72,7 @@ const userPost = async(req, res = response) => {
         usuario
     });
 }
+
 
 module.exports = {
     userGet,
