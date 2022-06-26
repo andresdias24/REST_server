@@ -1,7 +1,6 @@
 const {response, query} = require('express');
 const Usuario = require('../models/usuario');
 const bcryptjs = require('bcryptjs');
-const usuario = require('../models/usuario');
 
 
 const userGet = async (req, res =  response ) => {
@@ -11,10 +10,10 @@ const userGet = async (req, res =  response ) => {
     
     // validar el async await  se ejecuntan  en orden pero si una respuesta no depende de la otra lo mejor es utilizar promise.all() el time sera mas rapido    
     const [total , usuarios] = await Promise.all([
-        usuario.find(query)
+        Usuario.find(query)
             .skip(Number(desde))
             .limit(Number(limite)), 
-        usuario.countDocuments(query)]);
+        Usuario.countDocuments(query)]);
     
     res.status(200).json({ ok: true,total, usuarios });
 }
@@ -32,7 +31,7 @@ const userPut = async (req, res =  response ) => {
         rest.password = bcryptjs.hashSync(password, salt);    
     }
 
-    const usuarios = await usuario.findByIdAndUpdate(id, rest, { new: true });
+    const usuarios = await Usuario.findByIdAndUpdate(id, rest, { new: true });
 
     res.status(200).json({
         ok: true,
@@ -44,14 +43,14 @@ const userPut = async (req, res =  response ) => {
 
 const userDelete = async (req, res =  response ) => {
     const { id } = req.params;
-    const uid = req.uid
-    const usuarioDelete = await usuario.findByIdAndUpdate(id, { estado: false })
+    const usuario = req.usuario
+    const usuarioDelete = await Usuario.findByIdAndUpdate(id, { estado: false })
 
     res.status(200).json({
         ok: true,
         msg: 'DELETE- controller',
         usuarioDelete,
-        uid
+        usuario
     })
 }
 
