@@ -4,9 +4,7 @@ const { check } = require('express-validator');
 const router = Router();
 const { userGet, userDelete, userPost, userPut } = require('../controllers/user_controller');
 
-const { validarCampos } = require('../middlewares/validar-caampos');
-const { valiadteJWT } = require('../middlewares/validateJWT');
-const { esAdminRole, tieneRol } = require('../middlewares/validateRols');
+const { validarCampos, valiadteJWT, tieneRol} = require('../middlewares');
 
 const {esRolValido, existeCorreo, existeUsuario} = require('../helpers/dbValidators');
 
